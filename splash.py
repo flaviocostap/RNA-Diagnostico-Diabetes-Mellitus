@@ -85,6 +85,13 @@ checkbox_tahn.place(x = 140, y = 80)
 checkbox_sig.place(x = 140, y = 100)  
 checkbox_lin.place(x = 140, y = 120)
 
+# ------- Variáveis de entrada
+InterL=0
+
+def getInterLayer():
+  InterL=InterLayer.get()
+  print InterL
+
 LayerL = StringVar()
 LayerL.set("Camadas Intermediárias:")
 labelL = Label(app, textvariable=LayerL, height=4)
@@ -94,44 +101,73 @@ InterLayer=IntVar()
 InterLayerSelect=Entry(app, textvariable=InterLayer)
 InterLayerSelect.place(x = 320, y = 80)
 
+# --------
+LRate=0 
+
+def getLearnRate():
+  LRate=LearnR.get()
+  print LRate
+
 LearnRate = StringVar()
 LearnRate.set("Taxa de aprendizado:")
 labelLR = Label(app, textvariable=LearnRate, height=4)
 labelLR.place(x = 480, y = 40)
 
-LearnR=IntVar()
+LearnR=DoubleVar()
 LearnEntrySelect=Entry(app, textvariable=LearnR)
 LearnEntrySelect.place(x = 480, y = 80)
+
+# --------
+beta=0 
+
+def getMomentum():
+  beta=Momentum.get()
+  print beta
 
 MomentumLayer = StringVar()
 MomentumLayer.set("Momento:")
 labelLR = Label(app, textvariable=MomentumLayer, height=4)
 labelLR.place(x = 640, y = 40)
 
-Momentum=IntVar()
+Momentum=DoubleVar()
 MomentumEntry=Entry(app, textvariable=Momentum)
 MomentumEntry.place(x = 640, y = 80)
+
+# --------
+Iter=0
+
+def getMaxIter():
+  Iter=IterMax.get()
+  print Iter
 
 IterLayer = StringVar()
 IterLayer.set("Épocas:")
 labelIL = Label(app, textvariable=IterLayer)
 labelIL.place(x = 320, y = 120)
 
-Tol=IntVar()
-TolEntry=Entry(app, textvariable=Tol)
-TolEntry.place(x = 320, y = 140)
+IterMax=DoubleVar()
+ImaxEntry=Entry(app, textvariable=IterMax)
+ImaxEntry.place(x = 320, y = 140)
+
+# --------
+erro=0
+
+def getErro():
+  erro=Tol.get()
+  print erro
 
 TolLayer = StringVar()
 TolLayer.set("Erro:")
 labelIL = Label(app, textvariable=TolLayer)
 labelIL.place(x = 480, y = 120)
 
-Tol=IntVar()
+Tol=DoubleVar()
 TolEntry=Entry(app, textvariable=Tol)
 TolEntry.place(x = 480, y = 140)
 
-n = buildNetwork(10,15,1, bias=b, hiddenclass=f)
-
+n = buildNetwork(10,InterL,1, bias=b, hiddenclass=f)
+d = SupervisedDataSet(10,1)
+trainer = BackpropTrainer(n, d, learningrate = LRate, momentum=beta)
 # --------------------------------------------------------------
 # Perguntas
 
@@ -361,6 +397,7 @@ checkbox_Q10f.place(x = 400, y = 600)
 
 #-------------------------------------------------
 
-Treinar = Button(app, text="Começar Treinamento")
+Treinar = Button(app, text="Começar Treinamento", command=getErro)
 Treinar.place(x = 400, y = 680, anchor=CENTER)
+
 app.mainloop()
