@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
+from pybrain.supervised.trainers import BackpropTrainer
+from pybrain.tools.shortcuts import buildNetwork
+from pybrain.structure import TanhLayer
+from pybrain.structure import LinearLayer
+from pybrain.structure import SigmoidLayer
+from pybrain.datasets import SupervisedDataSet 
+import matplotlib.pyplot as plt
 from Tkinter import *
+import numpy as np
 
 app = Tk()
 app.title("Grupo 03 - Diabetes Mellitus")
@@ -15,13 +23,20 @@ Biaslabel.set("Seleção de Bias:")
 labelB = Label(app, textvariable=Biaslabel, height=4)
 labelB.place(x = 20, y = 40)
 
+b = True
+print b
+
 def checkBiasTrue():
     if(BiasTrue.get()):
        BiasFalse.set(0)
+       b = True
+       print b
 
 def checkBiasFalse():
     if(BiasFalse.get()):
        BiasTrue.set(0)
+       b = False
+       print b
 
 BiasTrue=IntVar()
 checkbox_tb = Checkbutton(app, text='Com Bias', variable=BiasTrue, command=checkBiasTrue)
@@ -35,20 +50,29 @@ Functionlabel.set("Seleção de Função:")
 labelF = Label(app, textvariable=Functionlabel, height=4)
 labelF.place(x = 140, y = 40)
 
+f=TanhLayer
+print f
+
 def checkFunctionTahn():
     if(Tahn.get()):
        Sigmoid.set(0)
        Linear.set(0)
+       f=TanhLayer
+       print f
 
 def checkFunctionSig():
     if(Sigmoid.get()):
        Tahn.set(0)
        Linear.set(0)
+       f=SigmoidLayer
+       print f
 
 def checkFunctionLin():
     if(Linear.get()):
        Sigmoid.set(0)
        Tahn.set(0)
+       f=LinearLayer
+       print f
 
 Tahn=IntVar()
 checkbox_tahn = Checkbutton(app, text='Tangente hiperbólica', variable=Tahn, command=checkFunctionTahn)
@@ -105,6 +129,8 @@ labelIL.place(x = 480, y = 120)
 Tol=IntVar()
 TolEntry=Entry(app, textvariable=Tol)
 TolEntry.place(x = 480, y = 140)
+
+n = buildNetwork(10,15,1, bias=b, hiddenclass=f)
 
 # --------------------------------------------------------------
 # Perguntas
