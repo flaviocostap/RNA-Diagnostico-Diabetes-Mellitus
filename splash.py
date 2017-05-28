@@ -80,7 +80,7 @@ def checkFunctionLin():
 Tahn=IntVar()
 checkbox_tahn = Checkbutton(app, text='Tangente hiperbólica', variable=Tahn, command=checkFunctionTahn)
 Sigmoid=IntVar()
-checkbox_sig = Checkbutton(app, text='Sigmoide', variable=Sigmoid, command=checkFunctionSig)
+checkbox_sig = Checkbutton(app, text='Sigmóide', variable=Sigmoid, command=checkFunctionSig)
 Linear=IntVar()
 checkbox_lin = Checkbutton(app, text='Linear', variable=Linear, command=checkFunctionLin)
 
