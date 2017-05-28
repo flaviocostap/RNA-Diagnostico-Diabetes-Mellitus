@@ -11,7 +11,7 @@ import numpy as np
 
 app = Tk()
 app.title("Grupo 03 - Diabetes Mellitus")
-app.geometry("810x800+200+200")
+app.geometry("810x900+200+200")
 
 labelText = StringVar()
 labelText.set("---- Configrações da RNA ----")
@@ -210,7 +210,6 @@ checkbox_Q1t = Checkbutton(app, text='Sim', variable=Q1t, command=checkQ1t)
 Q1f=IntVar()
 checkbox_Q1f = Checkbutton(app, text='Não', variable=Q1f, command=checkQ1f)
 checkbox_Q1t.place(x = 20, y = 260)
-Q1t.set(1)
 checkbox_Q1f.place(x = 20, y = 280)
 
 # -------
@@ -240,7 +239,6 @@ checkbox_Q2t = Checkbutton(app, text='Sim', variable=Q2t, command=checkQ2t)
 Q2f=IntVar()
 checkbox_Q2f = Checkbutton(app, text='Não', variable=Q2f, command=checkQ2f)
 checkbox_Q2t.place(x = 20, y = 340)
-Q2t.set(1)
 checkbox_Q2f.place(x = 20, y = 360)
 
 #--------
@@ -270,7 +268,6 @@ checkbox_Q3t = Checkbutton(app, text='Sim', variable=Q3t, command=checkQ3t)
 Q3f=IntVar()
 checkbox_Q3f = Checkbutton(app, text='Não', variable=Q3f, command=checkQ3f)
 checkbox_Q3t.place(x = 20, y = 420)
-Q3t.set(1)
 checkbox_Q3f.place(x = 20, y = 440)
 
 #--------
@@ -300,7 +297,6 @@ checkbox_Q4t = Checkbutton(app, text='Sim', variable=Q4t, command=checkQ4t)
 Q4f=IntVar()
 checkbox_Q4f = Checkbutton(app, text='Não', variable=Q4f, command=checkQ4f)
 checkbox_Q4t.place(x = 20, y = 500)
-Q4t.set(1)
 checkbox_Q4f.place(x = 20, y = 520)
 
 #--------
@@ -330,7 +326,6 @@ checkbox_Q5t = Checkbutton(app, text='Sim', variable=Q5t, command=checkQ5t)
 Q5f=IntVar()
 checkbox_Q5f = Checkbutton(app, text='Não', variable=Q5f, command=checkQ5f)
 checkbox_Q5t.place(x = 20, y = 580)
-Q5t.set(1)
 checkbox_Q5f.place(x = 20, y = 600)
 
 
@@ -361,7 +356,6 @@ checkbox_Q6t = Checkbutton(app, text='Sim', variable=Q6t, command=checkQ6t)
 Q6f=IntVar()
 checkbox_Q6f = Checkbutton(app, text='Não', variable=Q6f, command=checkQ6f)
 checkbox_Q6t.place(x = 400, y = 260)
-Q6t.set(1)
 checkbox_Q6f.place(x = 400, y = 280)
 
 #--------
@@ -391,7 +385,6 @@ checkbox_Q7t = Checkbutton(app, text='Sim', variable=Q7t, command=checkQ7t)
 Q7f=IntVar()
 checkbox_Q7f = Checkbutton(app, text='Não', variable=Q7f, command=checkQ7f)
 checkbox_Q7t.place(x = 400, y = 340)
-Q7t.set(1)
 checkbox_Q7f.place(x = 400, y = 360)
 
 #--------
@@ -421,7 +414,6 @@ checkbox_Q8t = Checkbutton(app, text='Sim', variable=Q8t, command=checkQ8t)
 Q8f=IntVar()
 checkbox_Q8f = Checkbutton(app, text='Não', variable=Q8f, command=checkQ8f)
 checkbox_Q8t.place(x = 400, y = 420)
-Q8t.set(1)
 checkbox_Q8f.place(x = 400, y = 440)
 
 #--------
@@ -450,7 +442,6 @@ checkbox_Q9t = Checkbutton(app, text='Sim', variable=Q9t, command=checkQ9t)
 Q9f=IntVar()
 checkbox_Q9f = Checkbutton(app, text='Não', variable=Q9f, command=checkQ9f)
 checkbox_Q9t.place(x = 400, y = 500)
-Q9t.set(1)
 checkbox_Q9f.place(x = 400, y = 520)
 
 #--------
@@ -480,8 +471,9 @@ checkbox_Q10t = Checkbutton(app, text='Sim', variable=Q10t, command=checkQ10t)
 Q10f=IntVar()
 checkbox_Q10f = Checkbutton(app, text='Não', variable=Q10f, command=checkQ10f)
 checkbox_Q10t.place(x = 400, y = 580)
-Q10t.set(1)
 checkbox_Q10f.place(x = 400, y = 600)
+
+
 
 #-----------------------Amostra aleatória--------------------------
 
@@ -505,7 +497,7 @@ def initRNA():
 
     n = buildNetwork(10,InterL,1, bias=b, hiddenclass=eval(f))
     d = SupervisedDataSet(10,1)
-    # getRandomSample()
+    getRandomSample()
     tol_max = erro
     trainer = BackpropTrainer(n, d, learningrate = LRate, momentum=beta)
     erroDpc = []
@@ -520,19 +512,26 @@ def initRNA():
             break
         iter_t += 1
 
+    r = n.activate(q[0,:])
     print" Chance real", MSP(q)
-    print"predito", n.activate(q[0,:])
+    real.set(MSP(q)*100)
+    print"predito", r
+    predict.set(r*100)
 
 def MSP(X):
     weight = np.array([2./10.5, 2./10.5, 2./10.5, 1./10.5, 1./10.5, 0.5/10.5, 0.5/10.5, 0.5/10.5, 0.5/10.5, 0.5/10.5])
     return np.dot(X, weight)
 
 def getRandomSample():
-    InterL=InterLayer.get()
-    LRate=LearnR.get()
-    beta=Momentum.get()
-    Iter=IterMax.get()
-    erro=Tol.get()
+    global d
+    global q
+    global b
+    global f
+    global InterL
+    global LRate
+    global beta
+    global erro
+    global Iter
     n = buildNetwork(10,InterL,1, bias=b, hiddenclass=eval(f))
     d = SupervisedDataSet(10,1)
     X = np.random.randint(0, 2, (200, 10)).astype(np.float64)
@@ -542,25 +541,56 @@ def getRandomSample():
     for i in xrange(0,X.shape[0]):
         d.addSample(X[i,:], y[i])
 
-    print"Chances Aleatórias", MSP(X)
-    print"predito", n.activate(X[0,:])
+    print" Chance real", y
 
-def plotGrafico():
-    plt.plot(erroDpc)
-    plt.xlabel('Geracao')
-    plt.ylabel('Erro')
-    plt.title('Decaimento do erro')
-    plt.show()
+#--------------------------------------------------
+
+Iter=0
+
+def getMaxIter():
+    global Iter
+    Iter=IterMax.get()
+    print Iter
+
+ChanceR = StringVar()
+ChanceR.set("Chance Real:")
+labelChanceR = Label(app, textvariable=ChanceR)
+labelChanceR.place(x = 480, y = 650)
+
+real=IntVar()
+RealEntry=Entry(app, textvariable=real)
+real.set(0)
+RealEntry.place(x = 560, y = 650)
+
+ChanceR = StringVar()
+ChanceR.set("(%)")
+labelChanceR = Label(app, textvariable=ChanceR)
+labelChanceR.place(x = 682, y = 651)
+
+PRna = StringVar()
+PRna.set("Predição da Rede:")
+labelPRna = Label(app, textvariable=PRna)
+labelPRna.place(x = 453, y = 671)
+
+predict=IntVar()
+predictEntry=Entry(app, textvariable=predict)
+predict.set(0)
+predictEntry.place(x = 560, y = 671)
+
+ChanceR = StringVar()
+ChanceR.set("(%)")
+labelChanceR = Label(app, textvariable=ChanceR)
+labelChanceR.place(x = 682, y = 672)
 
 #--------------------------------------------------
 
 Treinar = Button(app, text="Começar Treinamento", command=getRandomSample)
-Treinar.place(x = 220, y = 680, anchor=CENTER)
+Treinar.place(x = 20, y = 660)
 
 Treinar = Button(app, text="Resultado", command=initRNA)
-Treinar.place(x = 400, y = 680, anchor=CENTER)
+Treinar.place(x = 200, y = 660)
 
 Treinar = Button(app, text="Plotar Gráfico", command=getLearnRate)
-Treinar.place(x = 560, y = 680, anchor=CENTER)
+Treinar.place(x = 320, y = 660)
 
 app.mainloop()
