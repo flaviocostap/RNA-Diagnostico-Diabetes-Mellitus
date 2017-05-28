@@ -477,9 +477,10 @@ checkbox_Q10f.place(x = 400, y = 600)
 
 #-----------------------Amostra aleatória--------------------------
 
-
+erroDpc = []
 def initRNA():
     global d
+    global erroDpc
     q = np.array([[Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10]])
     InterL=InterLayer.get()
     LRate=LearnR.get()
@@ -498,16 +499,17 @@ def initRNA():
     n = buildNetwork(10,InterL,1, bias=b, hiddenclass=eval(f))
     d = SupervisedDataSet(10,1)
     getRandomSample()
-    tol_max = erro
     trainer = BackpropTrainer(n, d, learningrate = LRate, momentum=beta)
-    erroDpc = []
+    tol_max = erro
+    
+    n._setParameters(np.random.uniform(-1.,1.,n.params.shape[0]))
 
     iter_t = 0
     while Iter>0:
         erro = trainer.train()
         erroDpc.append(erro)
         Iter -= 1
-        print 'erro: ', erro
+        print 'geração:',iter_t,' | erro: ', erro
         if erro<=tol_max:
             break
         iter_t += 1
@@ -541,7 +543,7 @@ def getRandomSample():
     for i in xrange(0,X.shape[0]):
         d.addSample(X[i,:], y[i])
 
-    print" Chance real", y
+    print" Chance real", y*100, " %"
 
 #--------------------------------------------------
 
@@ -582,6 +584,13 @@ ChanceR.set("(%)")
 labelChanceR = Label(app, textvariable=ChanceR)
 labelChanceR.place(x = 682, y = 672)
 
+def plotGrafico():
+    global erroDpc
+    plt.plot(erroDpc)
+    plt.xlabel('Geracao')
+    plt.ylabel('Erro')
+    plt.title('Decaimento do erro')
+    plt.show()
 #--------------------------------------------------
 
 Treinar = Button(app, text="Começar Treinamento", command=getRandomSample)
@@ -590,7 +599,7 @@ Treinar.place(x = 20, y = 660)
 Treinar = Button(app, text="Resultado", command=initRNA)
 Treinar.place(x = 200, y = 660)
 
-Treinar = Button(app, text="Plotar Gráfico", command=getLearnRate)
+Treinar = Button(app, text="Plotar Gráfico", command=plotGrafico)
 Treinar.place(x = 320, y = 660)
 
 app.mainloop()
