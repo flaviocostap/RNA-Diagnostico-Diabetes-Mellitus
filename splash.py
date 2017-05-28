@@ -177,6 +177,39 @@ Tol=DoubleVar()
 TolEntry=Entry(app, textvariable=Tol)
 Tol.set(0.00001)
 TolEntry.place(x = 480, y = 140)
+
+intervaloA=0
+def getIntervaloA():
+    global intervaloA
+    intervaloA=intervaloInicial.get()
+    print intervaloA
+
+intervaloB=0
+def getIntervaloB():
+    global intervaloB
+    intervaloB=intervaloFinal.get()
+    print intervaloB
+
+intervalo = StringVar()
+intervalo.set("Ajuste de Pesos:")
+labelIntervalo = Label(app, textvariable=intervalo)
+labelIntervalo.place(x = 640, y = 120)
+
+intervaloInicial=StringVar()
+intervaloInicialEntry=Entry(app, textvariable=intervaloInicial)
+intervaloInicial.set(-1.)
+intervaloInicialEntry.place(x = 640, y = 140)
+
+intervalo = StringVar()
+intervalo.set("Até:")
+labelIntervalo = Label(app, textvariable=intervalo)
+labelIntervalo.place(x = 700, y = 160)
+
+intervaloFinal=StringVar()
+intervaloFinalEntry=Entry(app, textvariable=intervaloFinal)
+intervaloFinal.set(1.)
+intervaloFinalEntry.place(x = 640, y = 180)
+
 # --------------------------------------------------------------
 # Perguntas
 
@@ -487,6 +520,8 @@ def initRNA():
     beta=Momentum.get()
     Iter=IterMax.get()
     erro=Tol.get()
+    intervaloA=intervaloInicial.get()
+    intervaloB=intervaloFinal.get()
     print q
     print b
     print f
@@ -495,6 +530,8 @@ def initRNA():
     print beta
     print erro
     print Iter
+    print intervaloA
+    print intervaloB
 
     n = buildNetwork(10,InterL,1, bias=b, hiddenclass=eval(f))
     d = SupervisedDataSet(10,1)
@@ -502,7 +539,7 @@ def initRNA():
     trainer = BackpropTrainer(n, d, learningrate = LRate, momentum=beta)
     tol_max = erro
     
-    n._setParameters(np.random.uniform(-1.,1.,n.params.shape[0]))
+    n._setParameters(np.random.uniform(intervaloA,intervaloB,n.params.shape[0]))
 
     iter_t = 0
     while Iter>0:
