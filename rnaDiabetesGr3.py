@@ -203,7 +203,7 @@ intervaloInicialEntry.place(x = 640, y = 140)
 intervalo = StringVar()
 intervalo.set("Até:")
 labelIntervalo = Label(app, textvariable=intervalo)
-labelIntervalo.place(x = 700, y = 160)
+labelIntervalo.place(x = 700, y = 161)
 
 intervaloFinal=StringVar()
 intervaloFinalEntry=Entry(app, textvariable=intervaloFinal)
@@ -550,11 +550,16 @@ def initRNA():
         if erro<=tol_max:
             break
         iter_t += 1
+        plt.plot(erroDpc)
+        plt.xlabel('Epoca')
+        plt.ylabel('Erro')
+        plt.title('Decaimento do erro')
+        plt.pause(0.002)
 
     r = n.activate(q[0,:])
     print" Chance real", MSP(q)
     real.set(MSP(q)*100)
-    print"predito", r
+    print"predito", 
     predict.set(r*100)
 
 def MSP(X):
@@ -624,7 +629,7 @@ labelChanceR.place(x = 682, y = 672)
 def plotGrafico():
     global erroDpc
     plt.plot(erroDpc)
-    plt.xlabel('Geracao')
+    plt.xlabel('Epoca')
     plt.ylabel('Erro')
     plt.title('Decaimento do erro')
     plt.show()
