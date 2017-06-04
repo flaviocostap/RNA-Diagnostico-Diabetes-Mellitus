@@ -4,12 +4,12 @@ from pybrain.tools.shortcuts import buildNetwork
 from pybrain.structure import TanhLayer
 from pybrain.structure import LinearLayer
 from pybrain.structure import SigmoidLayer
-from pybrain.datasets import SupervisedDataSet 
-import matplotlib.pyplot as plt
+from pybrain.datasets import SupervisedDataSet
 from Tkinter import *
 import numpy as np
 
 app = Tk()
+import matplotlib.pyplot as plt # In order to work with OS X
 app.title("Grupo 03 - Diabetes Mellitus")
 app.geometry("810x900+200+200")
 
@@ -540,6 +540,11 @@ def initRNA():
     tol_max = erro
     
     n._setParameters(np.random.uniform(intervaloA,intervaloB,n.params.shape[0]))
+    
+    ####para que o gráfico plote de forma única
+    erroDpc = [] #limpa os dados a cada plot
+    plt.clf() #limpa o plot
+    plt.ion() # plota de forma interativa
 
     iter_t = 0
     while Iter>0:
@@ -550,7 +555,7 @@ def initRNA():
         if erro<=tol_max:
             break
         iter_t += 1
-        plt.plot(erroDpc)
+        plt.plot(erroDpc, c='r') #roubada
         plt.xlabel('Epoca')
         plt.ylabel('Erro')
         plt.title('Decaimento do erro')
