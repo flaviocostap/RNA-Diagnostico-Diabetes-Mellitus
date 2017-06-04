@@ -121,7 +121,7 @@ labelLR.place(x = 480, y = 40)
 
 LearnR=DoubleVar()
 LearnEntrySelect=Entry(app, textvariable=LearnR)
-LearnR.set(1e-3)
+LearnR.set(1e-2)
 LearnEntrySelect.place(x = 480, y = 80)
 
 # --------
@@ -175,7 +175,7 @@ labelIL.place(x = 480, y = 120)
 
 Tol=DoubleVar()
 TolEntry=Entry(app, textvariable=Tol)
-Tol.set(0.00001)
+Tol.set(1e-3)
 TolEntry.place(x = 480, y = 140)
 
 intervaloA=0
@@ -555,17 +555,41 @@ def initRNA():
         if erro<=tol_max:
             break
         iter_t += 1
-        plt.plot(erroDpc, c='r') #roubada
+        plt.plot(erroDpc, c='r')
         plt.xlabel('Epoca')
         plt.ylabel('Erro')
         plt.title('Decaimento do erro')
-        plt.pause(0.002)
+        plt.pause(0.02)
 
     r = n.activate(q[0,:])
     print" Chance real", MSP(q)
     real.set(MSP(q)*100)
     print"predito", 
     predict.set(r*100)
+
+    if (r*100>80):
+        Perigo = StringVar()
+        Perigo.set("PERIGO")
+        labelPerigo = Label(app, textvariable=Perigo,bg = "red", font = "Helvetica 13 bold")
+        labelPerigo.place(x = 665, y = 650)
+
+    if (r*100>50 and r*100<80):
+        Alerta = StringVar()
+        Alerta.set("ALERTA")
+        labelAlerta = Label(app, textvariable=Alerta,bg = "orange", font = "Helvetica 13 bold")
+        labelAlerta.place(x = 665, y = 650)
+
+    if (r*100>30 and r*100<50):
+        Atencao = StringVar()
+        Atencao.set("ATENÇÃO")
+        labelAtencao = Label(app, textvariable=Atencao,bg = "yellow", font = "Helvetica 13 bold")
+        labelAtencao.place(x = 665, y = 650)
+
+    if (r*100>0 and r*100<30):
+        SemRisco = StringVar()
+        SemRisco.set("SEM DE RISCO")
+        labelSemRisco = Label(app, textvariable=SemRisco,bg = "green", font = "Helvetica 13 bold")
+        labelSemRisco.place(x = 665, y = 650)
 
 def MSP(X):
     weight = np.array([2./10.5, 2./10.5, 2./10.5, 1./10.5, 1./10.5, 0.5/10.5, 0.5/10.5, 0.5/10.5, 0.5/10.5, 0.5/10.5])
@@ -604,32 +628,32 @@ def getMaxIter():
 ChanceR = StringVar()
 ChanceR.set("Chance Real:")
 labelChanceR = Label(app, textvariable=ChanceR)
-labelChanceR.place(x = 480, y = 650)
+labelChanceR.place(x = 346, y = 650)
 
 real=IntVar()
 RealEntry=Entry(app, textvariable=real)
 real.set(0)
-RealEntry.place(x = 560, y = 650)
+RealEntry.place(x = 426, y = 650)
 
 ChanceR = StringVar()
 ChanceR.set("(%)")
 labelChanceR = Label(app, textvariable=ChanceR)
-labelChanceR.place(x = 682, y = 651)
+labelChanceR.place(x = 548, y = 651)
 
 PRna = StringVar()
 PRna.set("Predição da Rede:")
 labelPRna = Label(app, textvariable=PRna)
-labelPRna.place(x = 453, y = 671)
+labelPRna.place(x = 320, y = 671)
 
 predict=IntVar()
 predictEntry=Entry(app, textvariable=predict)
 predict.set(0)
-predictEntry.place(x = 560, y = 671)
+predictEntry.place(x = 426, y = 671)
 
 ChanceR = StringVar()
 ChanceR.set("(%)")
 labelChanceR = Label(app, textvariable=ChanceR)
-labelChanceR.place(x = 682, y = 672)
+labelChanceR.place(x = 548, y = 672)
 
 def plotGrafico():
     global erroDpc
@@ -638,15 +662,21 @@ def plotGrafico():
     plt.ylabel('Erro')
     plt.title('Decaimento do erro')
     plt.show()
+
+Result = StringVar()
+Result.set("Resultado:")
+labelResult = Label(app, textvariable=Result)
+labelResult.place(x = 600, y = 650)
+
 #--------------------------------------------------
 
-Treinar = Button(app, text="Começar Treinamento", command=getRandomSample)
+Treinar = Button(app, text="Amostragem aleatória", command=getRandomSample)
 Treinar.place(x = 20, y = 660)
 
-Treinar = Button(app, text="Resultado", command=initRNA)
+Treinar = Button(app, text="Iniciar RNA", command=initRNA)
 Treinar.place(x = 200, y = 660)
 
-Treinar = Button(app, text="Plotar Gráfico", command=plotGrafico)
-Treinar.place(x = 320, y = 660)
+# Treinar = Button(app, text="Plotar Gráfico", command=plotGrafico)
+# Treinar.place(x = 320, y = 660)
 
 app.mainloop()
