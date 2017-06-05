@@ -555,11 +555,11 @@ def initRNA():
         if erro<=tol_max:
             break
         iter_t += 1
-        plt.plot(erroDpc, c='r')
+        plt.plot(erroDpc, c='r') 
         plt.xlabel('Epoca')
         plt.ylabel('Erro')
         plt.title('Decaimento do erro')
-        plt.pause(0.02)
+        plt.pause(0.002)
 
     r = n.activate(q[0,:])
     print" Chance real", MSP(q)
